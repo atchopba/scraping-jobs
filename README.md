@@ -20,6 +20,8 @@ Install modules
 
 * pip install ipython 
 
+* Add the path to the Python command in the environment variable "path"
+
 ### How test? ###
 
 * python scraping_web_jobs_index.py "job search" City NumDpt TypeContract
