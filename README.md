@@ -45,4 +45,4 @@ docker run jobs-cli "developpeur aws" Nantes 44 free
 
 ## License & copyright
 
-This project is licensed under the GNU GENERAL PUBLIC LICENSE - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the GNU GENERAL PUBLIC LICENSE - see the LICENSE.md file for details
