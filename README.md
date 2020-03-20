@@ -1,37 +1,48 @@
-# README #
+# Project Title
 
-This README would normally document whatever steps are necessary to get your application up and running.
+Extraction of job offers from indeed.fr, apec.fr, monster.fr... and storage in json format.
 
-### What is this repository for? ###
+## What is this repository for? 
 
-Scrap jobs on apec.fr, indeed.fr, monster.fr
+Scraping jobs is the extraction of key information about jobs through a search on a site. Here, there are: apec.fr, indeed.fr, monster.fr
 
-To do : google.fr, pole-emploi.fr
+## Benefices 
 
-### How do I get set up? ###
+* Make it easier to find a job
 
-* Install python 3.7 : https://www.python.org/downloads/release/python-376/
+* Gather information from several sites.
 
-Install modules 
+## Getting Started
 
-* python -m pip install --upgrade pip
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
-* pip install BeautifulSoup4
+### Prerequisites
 
-* pip install ipython 
+* Windows 7+ or Linux kernel version 3.10 or higher
+* 2.00 GB of RAM
+* 3.00 GB of available disk space
 
-* Add the path to the Python command in the environment variable "path"
+Use with Docker http://www.docker.io
 
-### How test? ###
+### Installation
 
-* python scraping_web_jobs_index.py "job search" City NumDpt TypeContract
+To build an image with docker is pretty simple:
+```
+docker build -t jobs-cli .
+```
 
+## Running the tests
+
+Then to run that image and attach to it at the same time:
+```
+docker run jobs-cli "job search" City NumDpt TypeContract
+```
 TypeContract value : perm (permanent), full (fulltime), ints (intership), free (freelance)
+Example: 
+```
+docker run jobs-cli "developpeur aws" Nantes 44 free
+```
 
-* Example: python scraping_web_jobs_index.py "developpeur aws" Nantes 44 free
+## License & copyright
 
-### Contribution guidelines ###
-
-* Writing tests
-* Code review
-* Other guidelines
+This project is licensed under the GNU GENERAL PUBLIC LICENSE - see the [LICENSE.md](LICENSE.md) file for details

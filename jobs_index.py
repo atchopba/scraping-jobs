@@ -1,10 +1,14 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-"""
-Created on Mon Mar  2 22:04:03 2020
+__author__ = "Albin TCHOPBA"
+__copyright__ = "Copyright 2020 Albin TCHOPBA and contributors"
+__credits__ = ["Albin TCHOPBA and contributors"]
+__license__ = "GPL"
+__version__ = "3"
+__maintainer__ = "Albin TCHOPBA"
+__email__ = "Albin TCHOPBA <atchopba @ gmail dot com"
+__status__ = "Production"
 
-@author: 7h3 d34d
-"""
 # pour la gestion des paramètres
 import sys
 
@@ -12,10 +16,10 @@ from warnings import warn
 
 #####
 # Pour lancer le programme dans le shell:
-# python scraping_web_jobs_index.py "libellé du job recherché" Ville NuméroDépartement TypeDeContrat
+# python jobs_index.py "libellé du job recherché" Ville NuméroDépartement TypeDeContrat
 # 
 # Pour par exemple lancer
-# python scraping_web_jobs_index.py "developpeur aws" Nantes 44 free
+# python jobs_index.py "developpeur aws" Nantes 44 free
 #####
 
 # vérification du nb de paramètres
@@ -30,11 +34,11 @@ type_contract = ''
 if len(sys.argv) == 5:
 	type_contract = sys.argv[4]
 
-import scraping_common as shc
-import scraping_web_jobs_apec as japec
-#import scraping_web_jobs_google as jgoogle
-import scraping_web_jobs_indeed as jindeed
-import scraping_web_jobs_monster as jmonster
+import jobs_common as jc
+import jobs_apec as japec
+#import jobs_google as jgoogle
+import jobs_indeed as jindeed
+import jobs_monster as jmonster
 
 # array of jobs
 arr_jobs = []
@@ -51,4 +55,4 @@ arr_jobs = jmonster.scrap_job(arr_jobs, s_job, city, type_contract)
 ### 
 
 ### impression des jobs en json
-print(shc.jprint(arr_jobs))
+print(jc.jprint(arr_jobs))

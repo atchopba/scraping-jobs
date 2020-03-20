@@ -1,10 +1,13 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-"""
-Created on Mon Mar  2 10:05:19 2020
-
-@author: 7h3 d34d
-"""
+__author__ = "Albin TCHOPBA"
+__copyright__ = "Copyright 2020 Albin TCHOPBA and contributors"
+__credits__ = ["Albin TCHOPBA and contributors"]
+__license__ = "GPL"
+__version__ = "3"
+__maintainer__ = "Albin TCHOPBA"
+__email__ = "Albin TCHOPBA <atchopba @ gmail dot com"
+__status__ = "Production"
 
 import json
 
@@ -30,5 +33,6 @@ def get_term(path):
 def jprint(obj):
     """ convert array to json """
     # create a formatted string of the Python JSON object
-    return repr(json.dumps(obj, sort_keys=True)) #, indent=4
+    return json.dumps(obj, sort_keys=True) #, indent=4 
+    # return repr(json.dumps(obj, sort_keys=True)) #, indent=4
 

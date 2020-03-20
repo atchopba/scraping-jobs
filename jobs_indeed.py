@@ -1,10 +1,13 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-"""
-Created on Thu Feb 27 08:41:09 2020
-
-@author: 7h3 d34d
-"""
+__author__ = "Albin TCHOPBA"
+__copyright__ = "Copyright 2020 Albin TCHOPBA and contributors"
+__credits__ = ["Albin TCHOPBA and contributors"]
+__license__ = "GPL"
+__version__ = "3"
+__maintainer__ = "Albin TCHOPBA"
+__email__ = "Albin TCHOPBA <atchopba @ gmail dot com"
+__status__ = "Production"
 
 # pour exploiter les requêtes
 from requests import get
@@ -18,14 +21,14 @@ from IPython.display import clear_output
 from warnings import warn
 
 # pour transformer les données obtenues
-import scraping_common as shc
+import jobs_common as jc
 
 
 def scrap_job(arr_jobs, s_job, city, num_dpt, type_contract):
     
     ### paramètres pris
     # les termes doivent être séparés par '+'
-    param_search_words = shc.convert_arr_2_string(s_job.split(' '), '+') #'developpeur+aws'
+    param_search_words = jc.convert_arr_2_string(s_job.split(' '), '+') #'developpeur+aws'
     # le/la ville/département + (le numéro du département) => sans espace
     param_search_location = city + '+' + num_dpt #'Nantes+(44)'
     # type de contrat du job
@@ -44,7 +47,7 @@ def scrap_job(arr_jobs, s_job, city, num_dpt, type_contract):
         str_type_contract = 'jt='+arr_type_contract[param_type_contract]
     
     ### pages à parcourir
-    pages = [str(i*10) for i in range(0, shc.NB_PAGE)]
+    pages = [str(i*10) for i in range(0, jc.NB_PAGE)]
     requests = 0
     start_time = time()
     
@@ -70,7 +73,7 @@ def scrap_job(arr_jobs, s_job, city, num_dpt, type_contract):
             warn('Request: {}; Status code:{}'.format(requests, requests/elapsed_time))
         
         ### stopper quand les requêtes atteignent le quota
-        if requests > shc.NB_REQUETE:
+        if requests > jc.NB_REQUETE:
             warn('Nombre de requêtes trop important')
             break
         
@@ -105,9 +108,9 @@ def scrap_job(arr_jobs, s_job, city, num_dpt, type_contract):
             elif result.find('span', class_='company') is not None:
                 company = result.find('span', class_='company').text.strip()
             # note
-            note = shc.get_term(result.find('span', class_='ratingsContent'))
+            note = jc.get_term(result.find('span', class_='ratingsContent'))
             # salaire
-            salary = shc.get_term(result.find('span', class_='salaryText'))
+            salary = jc.get_term(result.find('span', class_='salaryText'))
             
             # date de publication
             publication_date = result.find('span', class_='date').text.strip()

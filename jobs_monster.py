@@ -1,24 +1,27 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-"""
-Created on Sat Feb 29 09:37:06 2020
-
-@author: 7h3d d34d
-"""
+__author__ = "Albin TCHOPBA"
+__copyright__ = "Copyright 2020 Albin TCHOPBA and contributors"
+__credits__ = ["Albin TCHOPBA and contributors"]
+__license__ = "GPL"
+__version__ = "3"
+__maintainer__ = "Albin TCHOPBA"
+__email__ = "Albin TCHOPBA <atchopba @ gmail dot com"
+__status__ = "Production"
 
 # pour exploiter les requêtes
 from requests import get
 from bs4 import BeautifulSoup
 
 # pour transformer les données obtenues
-import scraping_common as shc
+import jobs_common as jc
 
 
 def scrap_job(arr_jobs, s_job, city, type_contract):
     
     ### paramètres pris
     # les termes doivent être séparés par '-'
-    param_search_words = shc.convert_arr_2_string(s_job.split(' '), '-') #'developpeur-aws'
+    param_search_words = jc.convert_arr_2_string(s_job.split(' '), '-') #'developpeur-aws'
     # le/la ville/département
     param_search_location = city #'Nantes'
     # type de contrat du job
@@ -36,7 +39,7 @@ def scrap_job(arr_jobs, s_job, city, type_contract):
         str_type_contract = arr_type_contract[param_type_contract]
     
     ### pages à parcourir
-    pages = str(shc.NB_PAGE)
+    pages = str(jc.NB_PAGE)
     
     # 
     root_path = 'https://www.monster.fr/emploi/recherche/'+ str_type_contract +'?q='+ param_search_words +'&where='+ param_search_location +'&cy=fr&stpage=1&page='+pages
@@ -59,7 +62,6 @@ def scrap_job(arr_jobs, s_job, city, type_contract):
             ### ajout des resultats dans les tableaux
             # titre
             tmp_title = result.find('h2', class_='title')
-            # print(tmp_title)
             title = tmp_title.a.text.strip()
             # lien
             link = tmp_title.a['href'].strip()
