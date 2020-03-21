@@ -36,12 +36,13 @@ if len(sys.argv) == 5:
 
 import jobs_common as jc
 import jobs_apec as japec
-#import jobs_google as jgoogle
 import jobs_indeed as jindeed
 import jobs_monster as jmonster
 
 # array of jobs
 arr_jobs = []
+
+print('please wait, search in progress...')
 
 ## apec.fr
 arr_jobs = japec.scrap_job(arr_jobs, s_job, num_dpt, type_contract)

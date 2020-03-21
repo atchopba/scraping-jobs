@@ -55,8 +55,6 @@ def scrap_job(arr_jobs, s_job, city, num_dpt, type_contract):
     for page in pages:
         # 
         root_path = 'https://www.indeed.fr/jobs?q='+ param_search_words +'&l='+ param_search_location +'&start='+page+'&'+str_type_contract
-        #print(root_path)
-        #break
         response = get(root_path)
         
         ### pause de 8 à 15s
@@ -65,8 +63,8 @@ def scrap_job(arr_jobs, s_job, city, num_dpt, type_contract):
         ### afficher les informations sur les requêtes
         requests += 1 # incrémentation du nombre de requête
         elapsed_time = time() - start_time
-        print('Request: {}; Frequency: {} requests/s'.format(requests, requests/elapsed_time))
-        clear_output(wait=True)
+        # print('Request: {}; Frequency: {} requests/s'.format(requests, requests/elapsed_time))
+        # clear_output(wait=True)
         
         ### avertir si le code status est différent de 200
         if response.status_code != 200:
