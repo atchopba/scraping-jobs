@@ -1,4 +1,4 @@
-# Project Title
+# Overview
 
 Extraction of job offers from indeed.fr, apec.fr, monster.fr... and storage in json format.
 
@@ -6,7 +6,7 @@ Extraction of job offers from indeed.fr, apec.fr, monster.fr... and storage in j
 
 Scraping jobs is the extraction of key information about jobs through a search on a site. Here, there are: apec.fr, indeed.fr, monster.fr
 
-## Benefices 
+## Benefits 
 
 * Make it easier to find a job
 
