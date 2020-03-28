@@ -1,12 +1,8 @@
 # Overview
 
-Extraction of job offers from indeed.fr, apec.fr, monster.fr... and storage in json format.
+Scraping jobs allow to extract job offers from majors job boards (currently, indeed.fr, apec.fr, monster.fr), store them locally in JSON format. More importantly, it provides on top of the collected data an simple and unified job search.
 
-## What is this repository for? 
-
-Scraping jobs is the extraction of key information about jobs through a search on a site. Here, there are: apec.fr, indeed.fr, monster.fr
-
-For the search, you have to pass as parameters: 
+You can easily search for jobs using only key parameters, including: 
 - the title of the job you are looking for,
 - the name of city (in France),
 - the code of the department in which the city is located and
