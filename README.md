@@ -6,6 +6,12 @@ Extraction of job offers from indeed.fr, apec.fr, monster.fr... and storage in j
 
 Scraping jobs is the extraction of key information about jobs through a search on a site. Here, there are: apec.fr, indeed.fr, monster.fr
 
+For the search, you have to pass as parameters: 
+- the title of the job you are looking for,
+- the name of city (in France),
+- the code of the department in which the city is located and
+- the type of contract you want.
+
 ## Benefits 
 
 * Make it easier to find a job
@@ -31,11 +37,11 @@ To build an image with docker is pretty simple:
 docker build -t jobs-cli .
 ```
 
-## Running the tests
+## Using the tool
 
 Then to run that image and attach to it at the same time:
 ```
-docker run jobs-cli "job search" City NumDpt TypeContract
+docker run jobs-cli "job search" City codeDpt TypeContract
 ```
 TypeContract value : perm (permanent), full (fulltime), ints (intership), free (freelance)
 Example: 
