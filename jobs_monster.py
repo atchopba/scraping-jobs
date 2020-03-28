@@ -25,7 +25,7 @@ def scrap_job(arr_jobs, s_job, city, type_contract):
     # le/la ville/département
     param_search_location = city #'Nantes'
     # type de contrat du job
-    param_type_contract = type_contract #''
+    param_type_contract = type_contract
      
     ### type de job
     arr_type_contract = {

@@ -24,13 +24,13 @@ from warnings import warn
 import jobs_common as jc
 
 
-def scrap_job(arr_jobs, s_job, city, num_dpt, type_contract):
+def scrap_job(arr_jobs, s_job, city, code_dpt, type_contract):
     
     ### paramètres pris
     # les termes doivent être séparés par '+'
-    param_search_words = jc.convert_arr_2_string(s_job.split(' '), '+') #'developpeur+aws'
+    param_search_words = jc.convert_arr_2_string(s_job.split(' '), '+') 
     # le/la ville/département + (le numéro du département) => sans espace
-    param_search_location = city + '+' + num_dpt #'Nantes+(44)'
+    param_search_location = city + '+' + code_dpt
     # type de contrat du job
     param_type_contract = type_contract #'free'
     
@@ -63,8 +63,6 @@ def scrap_job(arr_jobs, s_job, city, num_dpt, type_contract):
         ### afficher les informations sur les requêtes
         requests += 1 # incrémentation du nombre de requête
         elapsed_time = time() - start_time
-        # print('Request: {}; Frequency: {} requests/s'.format(requests, requests/elapsed_time))
-        # clear_output(wait=True)
         
         ### avertir si le code status est différent de 200
         if response.status_code != 200:

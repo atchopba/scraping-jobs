@@ -29,7 +29,7 @@ if len(sys.argv) not in (4, 5):
 
 s_job = sys.argv[1]
 city = sys.argv[2]
-num_dpt = sys.argv[3]
+code_dpt = sys.argv[3]
 type_contract = ''
 if len(sys.argv) == 5:
 	type_contract = sys.argv[4]
@@ -45,10 +45,10 @@ arr_jobs = []
 print('please wait, search in progress...')
 
 ## apec.fr
-arr_jobs = japec.scrap_job(arr_jobs, s_job, num_dpt, type_contract)
+arr_jobs = japec.scrap_job(arr_jobs, s_job, code_dpt, type_contract)
 
 ## indeed.fr
-arr_jobs = jindeed.scrap_job(arr_jobs, s_job, city, num_dpt, type_contract)
+arr_jobs = jindeed.scrap_job(arr_jobs, s_job, city, code_dpt, type_contract)
 
 ## monster.fr
 arr_jobs = jmonster.scrap_job(arr_jobs, s_job, city, type_contract)

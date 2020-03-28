@@ -26,13 +26,13 @@ import json
 import jobs_common as jc
 
 
-def scrap_job(arr_jobs, s_job, num_dpt, type_contract):
+def scrap_job(arr_jobs, s_job, code_dpt, type_contract):
     
     ### paramètres pris
     # les termes doivent être séparés par ' ' ou '%20'
     param_search_words = s_job #'developpeur aws'
     # le numéro du département
-    param_search_location = num_dpt #'577013'
+    param_search_location = code_dpt
     # type de contrat du job
     param_type_contract = type_contract #''
     
@@ -55,8 +55,7 @@ def scrap_job(arr_jobs, s_job, num_dpt, type_contract):
     ### parcours des pages
     for page in pages:
         
-        # 
-        ###root_path = 'https://www.apec.fr/candidat/recherche-emploi.html/emploi?motsCles='+ param_search_words +'&lieux='+ param_search_location+'&page='+page
+        #
         root_path = 'https://www.apec.fr/cms/webservices/rechercheOffre'
         payload = {
             'lieux': [param_search_location],
@@ -85,8 +84,6 @@ def scrap_job(arr_jobs, s_job, num_dpt, type_contract):
         ### afficher les informations sur les requêtes
         requests += 1 # incrémentation du nombre de requête
         elapsed_time = time() - start_time
-        # print('Request: {}; Frequency: {} requests/s'.format(requests, requests/elapsed_time))
-        # clear_output(wait=True)
         
         ### avertir si le code status est différent de 200
         if response.status_code != 200:
