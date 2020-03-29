@@ -37,12 +37,16 @@ docker build -t jobs-cli .
 
 Then to run that image and attach to it at the same time:
 ```
-docker run jobs-cli "job search" city codeDpt TypeContract
+docker run jobs-cli "job search" "city" codeDpt TypeContract
 ```
 TypeContract value : perm (permanent), full (fulltime), ints (intership), free (freelance)
 Example: 
 ```
 docker run jobs-cli "developpeur aws" Nantes 44 free
+```
+or without type of contract
+```
+docker run jobs-cli "developpeur aws" "Le Mans" 72
 ```
 
 ## License & copyright
