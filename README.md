@@ -10,7 +10,7 @@ You can easily search for jobs using only key parameters, including:
 
 ## Benefits 
 
-* Make it easier to find a job
+* Make it easier to find a job.
 
 * Gather information from several sites.
 
