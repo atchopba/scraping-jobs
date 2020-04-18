@@ -24,13 +24,13 @@ from warnings import warn
 import jobs_common as jc
 
 
-def scrap_job(arr_jobs, s_job, city, code_dpt, type_contract):
+def scrap_job(arr_jobs, s_job, city, num_dpt, type_contract):
     
     ### paramètres pris
     # les termes doivent être séparés par '+'
-    param_search_words = jc.convert_arr_2_string(s_job.split(' '), '+') 
+    param_search_words = jc.convert_arr_2_string(s_job.split(' '), '+') #'developpeur+aws'
     # le/la ville/département + (le numéro du département) => sans espace
-    param_search_location = city + '+' + code_dpt
+    param_search_location = city + '+' + num_dpt #'Nantes+(44)'
     # type de contrat du job
     param_type_contract = type_contract #'free'
     
@@ -55,6 +55,8 @@ def scrap_job(arr_jobs, s_job, city, code_dpt, type_contract):
     for page in pages:
         # 
         root_path = 'https://www.indeed.fr/jobs?q='+ param_search_words +'&l='+ param_search_location +'&start='+page+'&'+str_type_contract
+        #print(root_path)
+        #break
         response = get(root_path)
         
         ### pause de 8 à 15s
@@ -63,6 +65,8 @@ def scrap_job(arr_jobs, s_job, city, code_dpt, type_contract):
         ### afficher les informations sur les requêtes
         requests += 1 # incrémentation du nombre de requête
         elapsed_time = time() - start_time
+        print('Request: {}; Frequency: {} requests/s'.format(requests, requests/elapsed_time))
+        clear_output(wait=True)
         
         ### avertir si le code status est différent de 200
         if response.status_code != 200:
@@ -83,45 +87,49 @@ def scrap_job(arr_jobs, s_job, city, code_dpt, type_contract):
         ### parcours des containers
         for result in result_containers:
             
-            ### ajout des resultats dans les tableaux
-            # titre
-            tmp_title = result.find('div', class_='title')
-            title = tmp_title.a['title'].strip()
-            # lien
-            link = tmp_title.a['href'].strip()
-            # localisation 
-            location = ''
-            if result.find('div', class_='location') is not None:
-                location = result.find('div', class_='location').text.strip()
-            elif result.find('span', class_='location') is not None:
-                location = result.find('span', class_='location').text
-            # description
-            description = result.ul.text.strip()
-            # entreprise
-            company = ''
-            if result.find('span', class_='company').a is not None:
-                company = result.find('span', class_='company').a.text.strip()
-            elif result.find('span', class_='company') is not None:
-                company = result.find('span', class_='company').text.strip()
-            # note
-            note = jc.get_term(result.find('span', class_='ratingsContent'))
-            # salaire
-            salary = jc.get_term(result.find('span', class_='salaryText'))
-            
-            # date de publication
-            publication_date = result.find('span', class_='date').text.strip()
-            
-            arr_jobs.append({
-                'title' : title,
-                'link' : 'https://www.indeed.fr'+link,
-                'location' : location,
-                'description' : description,
-                'company' : company,
-                'note' : note,
-                'salary' : salary,
-                'publication_date' : publication_date,
-                'publication_time' : ''
-            })
-    
+            try:
+                ### ajout des resultats dans les tableaux
+                # titre
+                tmp_title = result.find('h2', class_='title')
+                #
+                title = tmp_title.a['title'].strip()
+                # lien
+                link = tmp_title.a['href'].strip()
+                # localisation 
+                location = ''
+                if result.find('div', class_='location') is not None:
+                    location = result.find('div', class_='location').text.strip()
+                elif result.find('span', class_='location') is not None:
+                    location = result.find('span', class_='location').text
+                # description
+                description = result.ul.text.strip()
+                # entreprise
+                company = ''
+                if result.find('span', class_='company').a is not None:
+                    company = result.find('span', class_='company').a.text.strip()
+                elif result.find('span', class_='company') is not None:
+                    company = result.find('span', class_='company').text.strip()
+                # note
+                note = jc.get_term(result.find('span', class_='ratingsContent'))
+                # salaire
+                salary = jc.get_term(result.find('span', class_='salaryText'))
+                
+                # date de publication
+                publication_date = result.find('span', class_='date').text.strip()
+                
+                arr_jobs.append({
+                    'title' : title,
+                    'link' : 'https://www.indeed.fr'+link,
+                    'location' : location,
+                    'description' : description,
+                    'company' : company,
+                    'note' : note,
+                    'salary' : salary,
+                    'publication_date' : publication_date,
+                    'publication_time' : ''
+                })
+            except AttributeError as ae:
+                warn("Error : ", ae)
+
     ### retourne array
     return arr_jobs
