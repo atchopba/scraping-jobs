@@ -60,7 +60,6 @@ def scrap_job(arr_jobs, s_job, code_dpt, type_contract):
         payload = {
             'lieux': [param_search_location],
             'typeClient': 'CADRE',
-            #'typesContrat': [str_type_contract],
             'sorts' : [{
                 'type': 'SCORE',
                 'direction': 'DESCENDING'
