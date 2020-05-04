@@ -34,10 +34,10 @@ type_contract = ''
 if len(sys.argv) == 5:
 	type_contract = sys.argv[4]
 
-import jobs_common as jc
-import jobs_apec as japec
-import jobs_indeed as jindeed
-import jobs_monster as jmonster
+import common as jc
+from scraping.jobs_apec import scraping_jobs_apec
+from scraping.jobs_indeed import scraping_jobs_indeed
+from scraping.jobs_monster import scraping_jobs_monster
 
 # array of jobs
 arr_jobs = []
@@ -45,13 +45,26 @@ arr_jobs = []
 print('please wait, search in progress...')
 
 ## apec.fr
-arr_jobs = japec.scrap_job(arr_jobs, s_job, code_dpt, type_contract)
+sjapec = scraping_jobs_apec(s_job, type_contract)
+sjapec.set_code_dpt(code_dpt)
+dict_tmp = sjapec.scrap_job()
+if len(dict_tmp) > 0:
+    arr_jobs += dict_tmp
 
 ## indeed.fr
-arr_jobs = jindeed.scrap_job(arr_jobs, s_job, city, code_dpt, type_contract)
+sjindeed = scraping_jobs_indeed(s_job, type_contract)
+sjindeed.set_city(city)
+sjindeed.set_code_dpt(code_dpt)
+dict_tmp = sjindeed.scrap_job()
+if len(dict_tmp) > 0:
+    arr_jobs += dict_tmp
 
 ## monster.fr
-arr_jobs = jmonster.scrap_job(arr_jobs, s_job, city, type_contract)
+sjmonster = scraping_jobs_monster(s_job, type_contract)
+sjmonster.set_city(city)
+dict_tmp = sjmonster.scrap_job()
+if len(dict_tmp) > 0:
+    arr_jobs += dict_tmp
 
 ### 
 
