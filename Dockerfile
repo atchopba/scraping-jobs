@@ -18,4 +18,4 @@ RUN pip install -r requirements.txt
 WORKDIR .
 
 # We execute by default the jobs_index.py file
-ENTRYPOINT ["python", "./jobs_index.py"]
+ENTRYPOINT ["python", "./index.py"]
