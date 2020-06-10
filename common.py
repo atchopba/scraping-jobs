@@ -31,5 +31,3 @@ def jprint(obj):
     """ convert array to json """
     # create a formatted string of the Python JSON object
     return json.dumps(obj, sort_keys=True) #, indent=4 
-    # return repr(json.dumps(obj, sort_keys=True)) #, indent=4
-
