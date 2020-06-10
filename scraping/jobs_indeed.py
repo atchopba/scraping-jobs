@@ -69,8 +69,6 @@ class scraping_jobs_indeed(scraping_jobs):
         for page in pages:
             # 
             root_path = 'https://www.indeed.fr/jobs?q='+ param_search_words +'&l='+ param_search_location +'&start='+page+'&'+str_type_contract
-            #print(root_path)
-            #break
             response = get(root_path)
             
             ### pause de 8 à 15s
