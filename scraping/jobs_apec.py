@@ -112,8 +112,7 @@ class scraping_jobs_apec(scraping_jobs):
             
                 ### extraction des données du JSON renvoyé
                 for result in result_containers:
-                    #print('https://www.apec.fr/candidat/recherche-emploi.html/emploi/detail-offre/'+result['numeroOffre'])
-            
+                    #
                     dict_jobs.append({
                         'title' : result['intitule'],
                         'link' : 'https://www.apec.fr/candidat/recherche-emploi.html/emploi/detail-offre/'+result['numeroOffre'],
