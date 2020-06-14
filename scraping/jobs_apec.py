@@ -101,7 +101,10 @@ class scraping_jobs_apec(scraping_jobs):
                 warn('Nombre de requêtes trop important')
                 break
             
-            json_data = json.loads(content)
+            try:
+                json_data = json.loads(content)
+            except:
+                json_data = ""
             
             ### vérifier l'existence de l'index 'resultats'
             if 'resultats' in json_data:
