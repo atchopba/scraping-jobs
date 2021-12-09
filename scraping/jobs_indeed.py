@@ -106,7 +106,7 @@ class scraping_jobs_indeed(scraping_jobs):
                     #
                     title = tmp_title.find('span', attrs={'class': None})['title']
                     # lien
-                    link = '' #tmp_title.a['href'].strip()
+                    link = 'https://fr.indeed.com' + result.parent['href']
                     # localisation 
                     location = ''
                     if result.find('div', class_='companyLocation') is not None:
