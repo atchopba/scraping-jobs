@@ -10,8 +10,16 @@
 # __status__ = "Production"
 
 # pour exploiter les requêtes
-from requests import get
-from bs4 import BeautifulSoup
+from requests import post
+
+# pour le contrôle des requêtes
+from time import sleep
+from random import randint
+from time import time
+from warnings import warn
+
+# pour gérer json
+import json
 
 from scraping.jobs import scraping_jobs
 
@@ -20,88 +28,104 @@ import common as jc
 
 
 class scraping_jobs_monster(scraping_jobs):
-    
     #
     def set_city(self, city):
         self.city = city
     
     #
     def scrap_job(self):
-        
-        ### paramètres pris
-        # les termes doivent être séparés par '-'
-        param_search_words = jc.convert_arr_2_string(self.s_job.split(' '), '-') #'developpeur-aws'
-        # le/la ville/département
-        param_search_location = self.city #'Nantes'
-        # type de contrat du job
-        param_type_contract = self.type_contract
-         
-        ### type de job
-        arr_type_contract = {
-            'perm' : 'CDI_8',
-            'full' : 'Temps-Plein_8',
-            'ints' : 'Stage-Apprentissage-Alternance_8',
-            'free' : 'Indépendant-Freelance-Saisonnier_8'
-            }
-        str_type_contract = ''
-        if param_type_contract != '' and arr_type_contract[param_type_contract] is not None: 
-            str_type_contract = arr_type_contract[param_type_contract]
-        
-        ### pages à parcourir
-        pages = str(jc.NB_PAGE)
-        
+                
         # 
-        root_path = 'https://www.monster.fr/emploi/recherche/'+ str_type_contract +'?q='+ param_search_words +'&where='+ param_search_location +'&cy=fr&stpage=1&page='+pages
-        response = get(root_path)
+        dict_jobs = []
         
-        ### extraction du HTML de la page
-        content = response.text
-        html_soup = BeautifulSoup(content, 'html.parser')
-        
-        ### resultats de la recherche
-        tmp_result_container = html_soup.find('div', id='ResultsContainer')
-        result_containers = tmp_result_container.find_all('section', class_='card-content')
+        requests = 0
+        start_time = time()
         
         dict_jobs = []
         
-        ### parcours des containers
-        for result in result_containers:
+        ### parcours des pages
+        for page in range(0, jc.NB_PAGE):
+            #
+            root_path = 'https://appsapi.monster.io/jobs-svx-service/v2/monster/search-jobs/samsearch/fr-FR?apikey=ulBrClvGP6BGnOopklreIIPentd101O2'
+            payload = {
+                "jobQuery": {
+                    "query": self.s_job,
+                    "locations": [{
+                            "country": "fr",
+                            "address": self.city,
+                            "radius": {
+                                "unit": "km",
+                                "value": 20
+                            }
+                        }
+                    ]
+                },
+                "jobAdsRequest": {
+                    "position": [1, 2, 3, 4, 5, 6, 7, 8, 9],
+                    "placement": {
+                        "component": "JSR_SPLIT_VIEW",
+                        "appName": "monster"
+                    }
+                },
+                "fingerprintId": "4d11b5a4abf5c3062388257b9ee39e93",
+                "offset": page * 9,
+                "pageSize": 9,
+                "includeJobs": []
+            }
+            response = post(root_path, json=payload)
+            
+            content = response.content
+            
+            ### pause de 8 à 15s
+            sleep(randint(8, 15))
+            
+            ### afficher les informations sur les requêtes
+            requests += 1 # incrémentation du nombre de requête
+            elapsed_time = time() - start_time
+            
+            ### avertir si le code status est différent de 200
+            if response.status_code != 200:
+                warn('Request: {}; Status code:{}'.format(requests, requests/elapsed_time))
+            
+            ### stopper quand les requêtes atteignent le quota
+            if requests > jc.NB_REQUETE:
+                warn('Nombre de requêtes trop important')
+                break
+            
+            try:
+                json_data = json.loads(content)
+            except:
+                json_data = ""
+            
+            ### vérifier l'existence de l'index 'resultats'
+            if 'jobResults' in json_data:
+                result_containers = json_data['jobResults']
+            
+                ### extraction des données du JSON renvoyé
         
-            # s'il y a un titre    
-            if result.find('h2', class_='title') is not None:
-                
-                ### ajout des resultats dans les tableaux
-                # titre
-                tmp_title = result.find('h2', class_='title')
-                title = tmp_title.a.text.strip()
-                # lien
-                link = tmp_title.a['href'].strip()
-                # entreprise
-                company = ''
-                if result.find('div', class_='company').a is not None:
-                    company = result.find('div', class_='company').a.text.strip()
-                # localisation 
-                location = ''
-                if result.find('div', class_='location').span is not None:
-                    location = result.find('div', class_='location').span.text.strip()
-                elif result.find('div', class_='location').a is not None:
-                    location = result.find('div', class_='location').a.text.strip()
-                # date de publication
-                tmp_time = result.find('time')
-                publication_date = tmp_time.text.strip()
-                publication_time = tmp_time['datetime'].strip()
-                
-                dict_jobs.append({
-                    'title' : title,
-                    'link' : link,
-                    'location' : location,
-                    'description' : '',
-                    'company' : company,
-                    'note' : '',
-                    'salary' : '',
-                    'publication_date' : publication_date,
-                    'publication_time': publication_time
-                })
-        
+                ### extraction des données du JSON renvoyé
+                for result in result_containers:
+                    # get salary
+                    salary = ''
+                    if 'baseSalary' in result['jobPosting']:
+                        minValue = result['jobPosting']['baseSalary']['value']['minValue'] if 'minValue' in result['jobPosting']['baseSalary']['value'] else ''
+                        maxValue = result['jobPosting']['baseSalary']['value']['maxValue'] if 'maxValue' in result['jobPosting']['baseSalary']['value'] else ''
+                        unitText = result['jobPosting']['baseSalary']['value']['unitText'] if 'unitText' in result['jobPosting']['baseSalary']['value'] else ''
+                        salary = str(minValue) + ' - ' + str(maxValue) + ' '+ unitText
+                    # get location
+                    location = result['jobPosting']['jobLocation'][0]['address']['addressLocality'] if len(result['jobPosting']['jobLocation']) > 0 else ''
+                    #
+                    dict_jobs.append({
+                        'title' : result['jobPosting']['title'],
+                        'link' : result['jobPosting']['url'],
+                        'location' : location,
+                        'description' : result['jobPosting']['description'],
+                        'company' : result['jobPosting']['hiringOrganization']['name'],
+                        'note' : '',
+                        'salary' : salary,
+                        'publication_date' : result['jobPosting']['datePosted'],
+                        'publication_time' : ''
+                    })
+            
         ### retourne array
         return dict_jobs
