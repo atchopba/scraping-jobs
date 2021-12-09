@@ -94,37 +94,37 @@ class scraping_jobs_indeed(scraping_jobs):
             html_soup = BeautifulSoup(content, 'html.parser')
             
             ### resultats de la recherche
-            result_containers = html_soup.find_all('div', class_='jobsearch-SerpJobCard unifiedRow row result')
+            result_containers = html_soup.find('div', {"id": "mosaic-zone-jobcards"}).find_all("div", class_="slider_container")
             
             ### parcours des containers
             for result in result_containers:
-                
+                #
                 try:
                     ### ajout des resultats dans les tableaux
                     # titre
-                    tmp_title = result.find('h2', class_='title')
+                    tmp_title = result.find('h2', class_='jobTitle')
                     #
-                    title = tmp_title.a['title'].strip()
+                    title = tmp_title.find('span', attrs={'class': None})['title']
                     # lien
-                    link = tmp_title.a['href'].strip()
+                    link = '' #tmp_title.a['href'].strip()
                     # localisation 
                     location = ''
-                    if result.find('div', class_='location') is not None:
-                        location = result.find('div', class_='location').text.strip()
-                    elif result.find('span', class_='location') is not None:
-                        location = result.find('span', class_='location').text
+                    if result.find('div', class_='companyLocation') is not None:
+                        location = result.find('div', class_='companyLocation').text.strip()
+                    elif result.find('span', class_='companyLocation') is not None:
+                        location = result.find('span', class_='companyLocation').text
                     # description
                     description = result.ul.text.strip()
                     # entreprise
                     company = ''
-                    if result.find('span', class_='company').a is not None:
-                        company = result.find('span', class_='company').a.text.strip()
-                    elif result.find('span', class_='company') is not None:
-                        company = result.find('span', class_='company').text.strip()
+                    if result.find('span', class_='companyName').a is not None:
+                        company = result.find('span', class_='companyName').a.text.strip()
+                    elif result.find('span', class_='companyName') is not None:
+                        company = result.find('span', class_='companyName').text.strip()
                     # note
-                    note = jc.get_term(result.find('span', class_='ratingsContent'))
+                    note = '' #jc.get_term(result.find('span', class_='ratingsContent'))
                     # salaire
-                    salary = jc.get_term(result.find('span', class_='salaryText'))
+                    salary = jc.get_term(result.find('div', class_='salary-snippet-container'))
                     
                     # date de publication
                     publication_date = result.find('span', class_='date').text.strip()
