@@ -131,7 +131,7 @@ class scraping_jobs_indeed(scraping_jobs):
                     
                     dict_jobs.append({
                         'title' : title,
-                        'link' : 'https://www.indeed.fr'+link,
+                        'link' : link,
                         'location' : location,
                         'description' : description,
                         'company' : company,
