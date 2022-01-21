@@ -114,7 +114,7 @@ class scraping_jobs_indeed(scraping_jobs):
                     elif result.find('span', class_='companyLocation') is not None:
                         location = result.find('span', class_='companyLocation').text
                     # description
-                    description = result.ul.text.strip()
+                    description = result.ul.text.strip() if result.ul is not None and result.ul.text is not None else ''
                     # entreprise
                     company = ''
                     if result.find('span', class_='companyName').a is not None:
