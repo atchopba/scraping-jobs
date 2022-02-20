@@ -11,6 +11,16 @@
 
 import json
 
+# pour exploiter les requêtes
+from requests import post
+
+# pour le contrôle des requêtes
+from time import sleep, time
+from random import randint
+
+
+from warnings import warn
+
 ### nombre de requêtes
 NB_REQUETE = 10
 
@@ -31,3 +41,31 @@ def jprint(obj):
     """ convert array to json """
     # create a formatted string of the Python JSON object
     return json.dumps(obj, sort_keys=True) #, indent=4 
+
+def post_data(root_path, payload, requests, start_time):
+    """ post data and get the result  """
+    response = post(root_path, json=payload)
+    content = response.content
+    
+    ### pause de 8 à 15s
+    sleep(randint(8, 15))
+    
+    ### afficher les informations sur les requêtes
+    requests += 1 # incrémentation du nombre de requête
+    elapsed_time = time() - start_time
+    
+    ### avertir si le code status est différent de 200
+    if response.status_code != 200:
+        warn('Request: {}; Status code:{}'.format(requests, requests/elapsed_time))
+    
+    ### stopper quand les requêtes atteignent le quota
+    if requests > NB_REQUETE:
+        warn('Nombre de requêtes trop important')
+        return
+    
+    try:
+        json_data = json.loads(content)
+    except:
+        json_data = ""
+    
+    return json_data

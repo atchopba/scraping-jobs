@@ -9,17 +9,8 @@
 # __email__ = "Albin TCHOPBA <atchopba @ gmail dot com"
 # __status__ = "Production"
 
-# pour exploiter les requêtes
-from requests import post
-
 # pour le contrôle des requêtes
-from time import sleep
-from random import randint
 from time import time
-from warnings import warn
-
-# pour gérer json
-import json
 
 from scraping.jobs import scraping_jobs
 
@@ -82,29 +73,8 @@ class scraping_jobs_apec(scraping_jobs):
                 },
                 'motsCles': param_search_words
             }
-            response = post(root_path, json=payload)
-            content = response.content
             
-            ### pause de 8 à 15s
-            sleep(randint(8, 15))
-            
-            ### afficher les informations sur les requêtes
-            requests += 1 # incrémentation du nombre de requête
-            elapsed_time = time() - start_time
-            
-            ### avertir si le code status est différent de 200
-            if response.status_code != 200:
-                warn('Request: {}; Status code:{}'.format(requests, requests/elapsed_time))
-            
-            ### stopper quand les requêtes atteignent le quota
-            if requests > jc.NB_REQUETE:
-                warn('Nombre de requêtes trop important')
-                break
-            
-            try:
-                json_data = json.loads(content)
-            except:
-                json_data = ""
+            json_data = jc.post_data(root_path, payload, requests, start_time)
             
             ### vérifier l'existence de l'index 'resultats'
             if 'resultats' in json_data:
