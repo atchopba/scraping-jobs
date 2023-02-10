@@ -1,4 +1,4 @@
 requests==2.22.0
 BeautifulSoup4==4.9.0
-ipython==7.16.3
+ipython==8.10.0
 pytest==5.4.3
