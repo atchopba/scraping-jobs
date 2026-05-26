@@ -44,7 +44,6 @@ class scraping_jobs_apec(scraping_jobs):
         str_type_contract = '' # TODO use this
         if param_type_contract != '' and arr_type_contract[param_type_contract] is not None: 
             str_type_contract = 597171
-        
         ### pages à parcourir
         pages = [str(i) for i in range(0, jc.NB_PAGE)]
         requests = 0
